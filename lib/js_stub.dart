@@ -3,6 +3,10 @@ class JS {
   const JS([this.name]);
 }
 
-allowInterop<F extends Function>(F f){
-  throw UnimplementedError();
+typedef JSExportedDartFunction = void Function();
+
+extension JSCompatible<T extends Function> on T {
+  JSExportedDartFunction get toJS => () {
+        throw UnimplementedError();
+      };
 }

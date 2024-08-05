@@ -12,7 +12,7 @@ import 'package:pwa_install/js_stub.dart'
 ///
 /// Function that gets called from JavaScript code if app was launched as a PWA
 @JS("appLaunchedAsPWA")
-external set _appLaunchedAsPWA(void Function() f);
+external set _appLaunchedAsPWA(JSExportedDartFunction f);
 
 @JS()
 external void appLaunchedAsPWA();
@@ -24,7 +24,7 @@ void setLaunchModePWA() {
 
 /// Function that gets called from JavaScript code if app was launched as a TWA
 @JS("appLaunchedAsTWA")
-external set _appLaunchedAsTWA(void Function() f);
+external set _appLaunchedAsTWA(JSExportedDartFunction f);
 
 @JS()
 external void appLaunchedAsTWA();
@@ -36,7 +36,7 @@ void setLaunchModeTWA() {
 
 /// Function that gets called from JavaScript when a install prompt has been detected
 @JS("hasPrompt")
-external set _hasPrompt(void Function() f);
+external set _hasPrompt(JSExportedDartFunction f);
 
 @JS()
 external void hasPrompt();
@@ -48,14 +48,14 @@ void setHasPrompt() {
 
 /// Function that gets called from JavaScript when the app is installed as a PWA
 @JS("appInstalled")
-external set _appInstalled(void Function() f);
+external set _appInstalled(JSExportedDartFunction f);
 
 @JS()
 external void appInstalled();
 
 /// Function that gets called from JavaScript code if app was launched from a browser
 @JS("appLaunchedInBrowser")
-external set _appLaunchedInBrowser(void Function() f);
+external set _appLaunchedInBrowser(JSExportedDartFunction f);
 
 @JS()
 external void appLaunchedInBrowser();
@@ -116,16 +116,16 @@ class PWAInstall {
     if (!kIsWeb) return;
 
     // JavaScript code may now call `appLaunchedAsPWA()` or `window.appLaunchedAsPWA()`.
-    _appLaunchedAsPWA = allowInterop(setLaunchModePWA);
+    _appLaunchedAsPWA = setLaunchModePWA.toJS;
     // JavaScript code may now call `appLaunchedInBrowser()` or `window.appLaunchedInBrowser()`.
-    _appLaunchedInBrowser = allowInterop(setLaunchModeBrowser);
+    _appLaunchedInBrowser = setLaunchModeBrowser.toJS;
     // JavaScript code may now call `appLaunchedAsTWA()` or `window.appLaunchedAsTWA()`.
-    _appLaunchedAsTWA = allowInterop(setLaunchModeTWA);
+    _appLaunchedAsTWA = setLaunchModeTWA.toJS;
 
-    _hasPrompt = allowInterop(setHasPrompt);
-    _appInstalled = allowInterop(() {
+    _hasPrompt = setHasPrompt.toJS;
+    _appInstalled = () {
       if (onAppInstalled != null) onAppInstalled!();
-    });
+    }.toJS;
     getLaunchMode_();
     onAppInstalled = installCallback;
   }

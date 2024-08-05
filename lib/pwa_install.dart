@@ -1,7 +1,8 @@
 library pwa_install;
 
 import 'package:flutter/foundation.dart';
-import 'package:pwa_install/js_stub.dart' if (dart.library.js) 'package:js/js.dart';
+import 'package:pwa_install/js_stub.dart'
+    if (dart.library.js_interop) 'dart:js_interop';
 
 /// Functions that are called from JavaScript
 /// Three parts:
@@ -98,7 +99,8 @@ class PWAInstall {
   /// installPromptEnabled will be true if the app was not already launched as a PWA or TWA and
   /// the browser prompted the user to install the app already. The browser needs to have presented the
   /// prompt because we are capturing that event and reusing it
-  bool get installPromptEnabled => hasPrompt && launchMode != LaunchMode.pwa && launchMode != LaunchMode.twa;
+  bool get installPromptEnabled =>
+      hasPrompt && launchMode != LaunchMode.pwa && launchMode != LaunchMode.twa;
 
   void getLaunchMode_() => getLaunchMode();
 
